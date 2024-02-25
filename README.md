@@ -1,9 +1,9 @@
 ### The Link shortener web-application
 
 The principle of the application is based on assigning to the original link one of the available combinations of
-symbols, numbers from 0 to 9 and Latin letters, large and small, 7 digits long. The application connects its current
+symbols, numbers from 0 to 9 and Latin symbols, large and small, 7 digits long. The application connects its current
 web domain using this combination. The number of such combinations is 62^7 or 3.521614606×10^12 or 3521 614 606 208. So 
-application can stores 62^7 urls.
+application can store 62^7 urls.
 
 Application receives from a user web link (original), stores it in DB, gives short link. Maximum length of
 a short link is 7 symbols. Application redirects the incoming request on short link to original link, which has saved
@@ -22,7 +22,7 @@ has reached and outputs errors messages in browser.
 * Run ```php artisan migrate```
 * Run ```php artisan config:cache```
 * Run ```php artisan config:clear```
-* Run ```chmod 777 -R /var/www/app/storage```
+* Run ```chmod 777 -R storage```
 * Open [http://localhost](http://localhost)
 * To exit, press ctrl+D and run ```docker-compose down```
 
