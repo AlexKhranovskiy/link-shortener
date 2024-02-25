@@ -22,4 +22,15 @@ class LinkController extends Controller
     {
         return $this->linkService->createLink($request->link);
     }
+
+    public function showLink(Request $request)
+    {
+        return $this->linkService->showLink($request->shortLink);
+    }
+
+    public function redirectByShortLink(Request $request)
+    {
+        $originalLink = $this->linkService->getOriginalLinkByShortLink($request->shortLink);
+        return redirect($originalLink);
+    }
 }

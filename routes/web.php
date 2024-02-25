@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [LinkController::class, 'showAddingLinkForm'])->name('root');
+Route::get('/', [LinkController::class, 'showAddingLinkForm'])->name('home');
+Route::get('/{shortLink}', [LinkController::class, 'redirectByShortLink']);
 Route::post('/links', [LinkController::class, 'createLink'])->name('link.create');
+Route::get('/links/{shortLink}', [LinkController::class, 'showLink'])->name('link.show');
