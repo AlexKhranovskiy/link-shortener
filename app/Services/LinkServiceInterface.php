@@ -36,4 +36,10 @@ interface LinkServiceInterface
      * @return View
      */
     public function showLink(string $shortLink): View;
+
+    /** Redirects request to url which is given short link value.
+     * @param string $shortLink
+     * @return RedirectResponse
+     */
+    public function redirectByShortLink(string $shortLink): RedirectResponse;
 }

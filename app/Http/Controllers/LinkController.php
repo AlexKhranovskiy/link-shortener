@@ -35,7 +35,6 @@ class LinkController extends Controller
 
     public function redirectByShortLink(LinkRequest $request): RedirectResponse
     {
-        $originalLink = $this->linkService->getOriginalLinkByShortLink($request->get('shortLink'));
-        return redirect($originalLink);
+        return $this->linkService->redirectByShortLink($request->get('shortLink'));
     }
 }

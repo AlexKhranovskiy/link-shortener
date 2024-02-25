@@ -80,4 +80,14 @@ class LinkService implements LinkServiceInterface
             return view('link.notFound', ['shortLink' => '/' . $shortLink]);
         }
     }
+
+    /** Redirects request to url which is given short link value.
+     * @param string $shortLink
+     * @return RedirectResponse
+     */
+    public function redirectByShortLink(string $shortLink): RedirectResponse
+    {
+        $originalLink = $this->getOriginalLinkByShortLink($shortLink);
+        return redirect($originalLink);
+    }
 }
