@@ -23,13 +23,14 @@ class LinkService implements LinkServiceInterface
         return $result;
     }
 
-    /** Finds original link value in DB using short link value in the condition.
+    /** Return the link model from DB record using short link value in the condition.
+     * if record in DB not found returns null.
      * @param string $shortLink
-     * @return string|null
+     * @return Link|null
      */
-    public function getOriginalLinkByShortLink(string $shortLink): ?string
+    public function getLinkModelByShortLink(string $shortLink): ?Link
     {
-        return Link::where('short', $shortLink)->first()?->original;
+        return Link::where('short', $shortLink)->first();
     }
 
     /** Returns view with form for the new short link adding.
@@ -69,12 +70,13 @@ class LinkService implements LinkServiceInterface
      */
     public function showLink(string $shortLink): View
     {
-        $originalLink = $this->getOriginalLinkByShortLink($shortLink);
+        $linkModel = $this->getLinkModelByShortLink($shortLink);
 
-        if (!is_null($originalLink)) {
+        if (!is_null($linkModel)) {
             return view('link.result', [
-                'originalLink' => $originalLink,
-                'shortLink' => '/' . $shortLink
+                'originalLink' => $linkModel->original,
+                'shortLink' => '/' . $shortLink,
+                'accessedTimes' => $linkModel->count
             ]);
         } else {
             return view('link.notFound', ['shortLink' => '/' . $shortLink]);
@@ -87,7 +89,9 @@ class LinkService implements LinkServiceInterface
      */
     public function redirectByShortLink(string $shortLink): RedirectResponse
     {
-        $originalLink = $this->getOriginalLinkByShortLink($shortLink);
-        return redirect($originalLink);
+        $linkModel= $this->getLinkModelByShortLink($shortLink);
+        $linkModel->increment('count');
+        $linkModel->save();
+        return redirect($linkModel->original);
     }
 }

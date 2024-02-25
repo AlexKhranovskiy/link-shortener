@@ -4,4 +4,6 @@
     <p><a href="{{$originalLink}}">{{$originalLink}}</a></p>
     <h3>Your short link:</h3>
     <p><a href="{{asset($shortLink)}}">{{asset($shortLink)}}</a></p>
+    <h3>Accessed times:</h3>
+    <p>{{$accessedTimes}}</p>
 @endsection

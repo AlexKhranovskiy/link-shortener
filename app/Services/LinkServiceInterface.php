@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Link;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -13,11 +14,12 @@ interface LinkServiceInterface
      */
     public function convertToBase62(int $number): string;
 
-    /** Finds original link value in DB using short link value in the condition.
+    /** Return the link model from DB record using short link value in the condition.
+     * if record in DB not found returns null.
      * @param string $shortLink
-     * @return string|null
+     * @return Link|null
      */
-    public function getOriginalLinkByShortLink(string $shortLink): ?string;
+    public function getLinkModelByShortLink(string $shortLink): ?Link;
 
     /** Returns view with form for the new short link adding.
      * @return View
