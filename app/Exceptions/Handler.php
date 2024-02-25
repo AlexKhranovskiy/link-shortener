@@ -23,8 +23,19 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (BadRequestException $e) {
+            return response()->view('link.error', [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'data' => $e->data
+            ]);
+        });
+
+        $this->renderable(function (Throwable $e) {
+            return response()->view('link.error', [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ]);
         });
     }
 }
