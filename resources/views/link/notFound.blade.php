@@ -1,5 +1,5 @@
 @extends('link.layout')
 @section('bodyContent')
-    <h3>Short link not found</h3>
+    <h4>Short link not found</h4>
     <p>The short link "{{asset($shortLink)}}" has not been found.</p>
 @endsection

@@ -43,24 +43,31 @@ class LinkService implements LinkServiceInterface
 
     /** Creates a short link and redirects to link show route.
      * @param string $link
-     * @return RedirectResponse
+     * @return RedirectResponse|View
      */
-    public function createLink(string $link): RedirectResponse
+    public function createLink(string $link): RedirectResponse|View
     {
-        $lastId = Link::latest()->first()?->id ?? 0;
+        $lastId = $this->getValidLastId();
+        if(false !== $lastId) {
+            $shortLink = $this->convertToBase62($lastId);
 
-        $shortLink = $this->convertToBase62($lastId);
+            $linkModel = Link::where('original', $link)->first();
 
-        $linkModel = Link::where('original', $link)->first();
+            if (is_null($linkModel)) {
+                $linkModel = Link::Create([
+                    'original' => $link,
+                    'short' => $shortLink
+                ]);
+            }
+            return redirect()->route('link.show', ['shortLink' => $linkModel->short]);
 
-        if (is_null($linkModel)) {
-            $linkModel = Link::Create([
-                'original' => $link,
-                'short' => $shortLink
+        } else {
+            return view('link.error', [
+                'code' => 409,
+                'message' => 'Number of possible links reached.',
+                'data' =>[]
             ]);
         }
-
-        return redirect()->route('link.show', ['shortLink' => $linkModel->short]);
     }
 
     /** Finds original link in DB and returns the view with original link and short link. if original link
@@ -94,5 +101,18 @@ class LinkService implements LinkServiceInterface
         $linkModel->increment('count');
         $linkModel->save();
         return redirect($linkModel->original);
+    }
+
+    /** Gets last id in the link table, checks if it's valid and returns. If it's invalid returns false.
+     * @return false|int
+     */
+    public function getValidLastId(): false|int
+    {
+        $lastId = Link::latest()->first()?->id ?? 0;
+        if($lastId < pow(62, 7)){ //3521614606208
+            return $lastId;
+        } else {
+            return false;
+        }
     }
 }

@@ -28,9 +28,9 @@ interface LinkServiceInterface
 
     /** Creates a short link and redirects to link show route.
      * @param string $link
-     * @return RedirectResponse
+     * @return RedirectResponse|View
      */
-    public function createLink(string $link): RedirectResponse;
+    public function createLink(string $link): RedirectResponse|View;
 
     /** Finds original link in DB and returns the view with original link and short link. if original link
      * has not been found returns not found view.
@@ -45,4 +45,9 @@ interface LinkServiceInterface
      * @return RedirectResponse
      */
     public function redirectByShortLink(string $shortLink): RedirectResponse;
+
+    /** Gets last id in the link table, checks if it's valid and returns. If it's invalid returns false.
+     * @return false|int
+     */
+    public function getValidLastId(): false|int;
 }

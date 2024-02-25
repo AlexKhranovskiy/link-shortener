@@ -23,7 +23,7 @@ class LinkController extends Controller
         return $this->linkService->getAddingLinkFormView();
     }
 
-    public function createLink(CreateLinkRequest $request): RedirectResponse
+    public function createLink(CreateLinkRequest $request): RedirectResponse|View
     {
         return $this->linkService->createLink($request->get('link'));
     }
