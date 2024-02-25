@@ -30,12 +30,5 @@ class Handler extends ExceptionHandler
                 'data' => $e->data
             ]);
         });
-
-        $this->renderable(function (Throwable $e) {
-            return response()->view('link.error', [
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-            ]);
-        });
     }
 }

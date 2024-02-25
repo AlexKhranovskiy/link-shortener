@@ -3,36 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateLinkRequest;
-use App\Http\Requests\Link1Request;
 use App\Http\Requests\LinkRequest;
 use App\Services\LinkService;
-use Illuminate\Http\Request;
+use App\Services\LinkServiceInterface;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class LinkController extends Controller
 {
     private LinkService $linkService;
 
-    public function __construct(LinkService $linkService)
+    public function __construct(LinkServiceInterface $linkService)
     {
         $this->linkService = $linkService;
     }
 
-    public function showAddingLinkForm()
+    public function showAddingLinkForm(): View
     {
-        return view('link.addingForm');
+        return $this->linkService->getAddingLinkFormView();
     }
 
-    public function createLink(CreateLinkRequest $request)
+    public function createLink(CreateLinkRequest $request): RedirectResponse
     {
         return $this->linkService->createLink($request->get('link'));
     }
 
-    public function showLink(LinkRequest $request)
+    public function showLink(LinkRequest $request): View
     {
         return $this->linkService->showLink($request->get('shortLink'));
     }
 
-    public function redirectByShortLink(LinkRequest $request)
+    public function redirectByShortLink(LinkRequest $request): RedirectResponse
     {
         $originalLink = $this->linkService->getOriginalLinkByShortLink($request->get('shortLink'));
         return redirect($originalLink);

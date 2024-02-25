@@ -3,10 +3,16 @@
 namespace App\Services;
 
 use App\Models\Link;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
-class LinkService
+class LinkService implements LinkServiceInterface
 {
-    protected function convertToBase62(int $number)
+    /** Converts 10 base number to 62 bas number.
+     * @param int $number
+     * @return string
+     */
+    public function convertToBase62(int $number): string
     {
         $index = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $result = '';
@@ -17,7 +23,28 @@ class LinkService
         return $result;
     }
 
-    public function createLink(string $link)
+    /** Finds original link value in DB using short link value in the condition.
+     * @param string $shortLink
+     * @return string|null
+     */
+    public function getOriginalLinkByShortLink(string $shortLink): ?string
+    {
+        return Link::where('short', $shortLink)->first()?->original;
+    }
+
+    /** Returns view with form for the new short link adding.
+     * @return View
+     */
+    public function getAddingLinkFormView(): View
+    {
+        return view('link.addingForm');
+    }
+
+    /** Creates a short link and redirects to link show route.
+     * @param string $link
+     * @return RedirectResponse
+     */
+    public function createLink(string $link): RedirectResponse
     {
         $lastId = Link::latest()->first()?->id ?? 0;
 
@@ -25,7 +52,7 @@ class LinkService
 
         $linkModel = Link::where('original', $link)->first();
 
-        if(is_null($linkModel)){
+        if (is_null($linkModel)) {
             $linkModel = Link::Create([
                 'original' => $link,
                 'short' => $shortLink
@@ -35,7 +62,12 @@ class LinkService
         return redirect()->route('link.show', ['shortLink' => $linkModel->short]);
     }
 
-    public function showLink(string $shortLink)
+    /** Finds original link in DB and returns the view with original link and short link. if original link
+     * has not been found returns not found view.
+     * @param string $shortLink
+     * @return View
+     */
+    public function showLink(string $shortLink): View
     {
         $originalLink = $this->getOriginalLinkByShortLink($shortLink);
 
@@ -47,10 +79,5 @@ class LinkService
         } else {
             return view('link.notFound', ['shortLink' => '/' . $shortLink]);
         }
-    }
-
-    public function getOriginalLinkByShortLink(string $shortLink): ?string
-    {
-        return Link::where('short', $shortLink)->first()?->original;
     }
 }

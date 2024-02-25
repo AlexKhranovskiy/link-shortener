@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\BadRequestException;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateLinkRequest extends FormRequest
