@@ -16,12 +16,17 @@ has reached and outputs errors messages in browser.
 * Clone the repository ```https://github.com/AlexKhranovskiy/link-shortener```
 * Create in root folder file .env, copy content from .env.example file to .env file
 * Run ```docker-compose up -d```
-* Go inside the container ```docker exec -it linkshortener_php-apache_1 bash```
+* Go inside the container ```docker exec -it link-shortener_php-apache_1 bash```
 * Run ```composer install```
-* Run ```php artisan optimize:clear```
+* Run ```php artisan key:generate```
 * Run ```php artisan migrate```
-* Run ```chmod 777 -R /var/www/html/storage```
 * Run ```php artisan config:cache```
 * Run ```php artisan config:clear```
+* Run ```chmod 777 -R /var/www/app/storage```
 * Open [http://localhost](http://localhost)
 * To exit, press ctrl+D and run ```docker-compose down```
+
+### Access to DB:
+* [http://localhost](http://localhost:802)
+* login: root
+* password secret
