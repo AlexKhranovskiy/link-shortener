@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateLinkRequest;
 use App\Services\LinkService;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class LinkController extends Controller
         return view('link.addingForm');
     }
 
-    public function createLink(Request $request)
+    public function createLink(CreateLinkRequest $request)
     {
         return $this->linkService->createLink($request->link);
     }
