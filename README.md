@@ -27,6 +27,6 @@ has reached and outputs errors messages in browser.
 * To exit, press ctrl+D and run ```docker-compose down```
 
 ### Access to DB:
-* [http://localhost](http://localhost:802)
+* [http://localhost:8082](http://localhost:802)
 * login: root
 * password secret
