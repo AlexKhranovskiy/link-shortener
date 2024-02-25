@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Link;
-use Termwind\Components\Li;
-use function PHPUnit\Framework\returnArgument;
 
 class LinkService
 {
@@ -25,12 +23,16 @@ class LinkService
 
         $shortLink = $this->convertToBase62($lastId);
 
-        Link::create([
-            'original' => $link,
-            'short' => $shortLink
-        ]);
+        $linkModel = Link::where('original', $link)->first();
 
-        return redirect()->route('link.show', ['shortLink' => $shortLink]);
+        if(is_null($linkModel)){
+            $linkModel = Link::Create([
+                'original' => $link,
+                'short' => $shortLink
+            ]);
+        }
+
+        return redirect()->route('link.show', ['shortLink' => $linkModel->short]);
     }
 
     public function showLink(string $shortLink)
